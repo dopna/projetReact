@@ -1,4 +1,4 @@
-@react.component
+ @react.component
 let make = () => {
   let (count, setCount) = React.useState(() => 0)
 
@@ -16,5 +16,6 @@ let make = () => {
       <code> {React.string("src/App.res")} </code>
       {React.string(" and save to test Fast Refresh.")}
     </p>
+    <HelloWorld name="remy"/>
   </div>
 }
