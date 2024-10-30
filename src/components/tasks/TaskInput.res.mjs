@@ -8,12 +8,20 @@ function TaskInput(props) {
   var match = React.useState(function () {
         return "";
       });
-  var setTask = match[1];
-  var task = match[0];
+  var setTitle = match[1];
+  var title = match[0];
+  var match$1 = React.useState(function () {
+        return "";
+      });
+  var setDescription = match$1[1];
+  var description = match$1[0];
   var handleSubmit = function () {
-    if (task !== "") {
-      addTask(task);
-      return setTask(function (prevTask) {
+    if (title !== "" && description !== "") {
+      addTask(title, description);
+      setTitle(function (param) {
+            return "";
+          });
+      return setDescription(function (param) {
                   return "";
                 });
     }
@@ -23,7 +31,7 @@ function TaskInput(props) {
               children: [
                 JsxRuntime.jsx("h1", {
                       children: "Gestionnaire de tâches minimaliste",
-                      className: "font-bold",
+                      className: "font-bold mb-2",
                       style: {
                         fontFamily: "Times New Roman",
                         fontSize: "15px"
@@ -31,36 +39,64 @@ function TaskInput(props) {
                     }),
                 JsxRuntime.jsx("h2", {
                       children: "Liste de Tâches",
-                      className: "text-xl ",
+                      className: "text-xl mb-4",
                       style: {
-                        fontSize: "15px"
+                        fontSize: "13px"
                       }
                     }),
                 JsxRuntime.jsxs("form", {
                       children: [
-                        JsxRuntime.jsx("input", {
-                              className: "border border-gray-300 rounded-l-md p-2 flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500",
-                              placeholder: "Ajouter une nouvelle tâche...",
-                              value: task,
-                              onChange: (function (e) {
-                                  setTask(function (param) {
-                                        return e.target.value;
-                                      });
-                                })
+                        JsxRuntime.jsxs("div", {
+                              children: [
+                                JsxRuntime.jsx("label", {
+                                      children: "Title:",
+                                      className: "text-sm mb-1"
+                                    }),
+                                JsxRuntime.jsx("input", {
+                                      className: "border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500",
+                                      placeholder: "What's the title of your To Do?",
+                                      value: title,
+                                      onChange: (function (e) {
+                                          setTitle(function (param) {
+                                                return e.target.value;
+                                              });
+                                        })
+                                    })
+                              ],
+                              className: "flex flex-col"
+                            }),
+                        JsxRuntime.jsxs("div", {
+                              children: [
+                                JsxRuntime.jsx("label", {
+                                      children: "Description:",
+                                      className: "text-sm mb-1"
+                                    }),
+                                JsxRuntime.jsx("input", {
+                                      className: "border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500",
+                                      placeholder: "What's the description of your To Do?",
+                                      value: description,
+                                      onChange: (function (e) {
+                                          setDescription(function (param) {
+                                                return e.target.value;
+                                              });
+                                        })
+                                    })
+                              ],
+                              className: "flex flex-col"
                             }),
                         JsxRuntime.jsx("button", {
-                              children: "Ajouter",
-                              className: "ml-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600",
+                              children: "Add",
+                              className: "p-2 bg-green-500 text-white rounded-md hover:bg-green-200",
                               type: "submit"
                             })
                       ],
-                      className: "task-input mt-4",
+                      className: "flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4",
                       onSubmit: (function (param) {
                           handleSubmit();
                         })
                     })
               ],
-              className: "flex flex-col items-center"
+              className: "flex flex-col items-center p-4 bg-gray-900 text-white rounded-lg"
             });
 }
 

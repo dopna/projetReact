@@ -8,8 +8,12 @@ function TaskItem(props) {
   var task = props.task;
   return JsxRuntime.jsxs("div", {
               children: [
-                JsxRuntime.jsx("span", {
-                      children: task.text,
+                JsxRuntime.jsxs("span", {
+                      children: [
+                        task.title,
+                        " - ",
+                        task.description
+                      ],
                       className: "task-text",
                       onClick: (function (param) {
                           completeTask();

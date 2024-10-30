@@ -6,17 +6,18 @@ import * as TaskInput from "../components/tasks/TaskInput.res.mjs";
 import * as Belt_Array from "rescript/lib/es6/belt_Array.js";
 import * as JsxRuntime from "react/jsx-runtime";
 
-function App(props) {
+function Tasks(props) {
   var match = React.useState(function () {
         return [];
       });
   var setTasks = match[1];
-  var addTask = function (newTask) {
+  var addTask = function (title, description) {
     setTasks(function (tasks) {
           return Belt_Array.concatMany([
                       tasks,
                       [{
-                          text: newTask,
+                          title: title,
+                          description: description,
                           isComplete: false
                         }]
                     ]);
@@ -27,7 +28,8 @@ function App(props) {
           return tasks.map(function (task, i) {
                       if (i === index) {
                         return {
-                                text: task.text,
+                                title: task.title,
+                                description: task.description,
                                 isComplete: !task.isComplete
                               };
                       } else {
@@ -45,6 +47,10 @@ function App(props) {
   };
   return JsxRuntime.jsxs("div", {
               children: [
+                JsxRuntime.jsx("h1", {
+                      children: "Liste de Tâches",
+                      className: "text-3xl font-semibold"
+                    }),
                 JsxRuntime.jsx(TaskInput.make, {
                       addTask: addTask
                     }),
@@ -58,7 +64,7 @@ function App(props) {
             });
 }
 
-var make = App;
+var make = Tasks;
 
 export {
   make ,

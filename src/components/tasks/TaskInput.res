@@ -1,36 +1,62 @@
 @react.component
-let make = (~addTask: string => unit) => {
-  let (task, setTask) = React.useState(() => "")
+let make = (~addTask: (string, string) => unit) => {
+  // Définition des états pour le titre et la description
+  let (title, setTitle) = React.useState(() => "")
+  let (description, setDescription) = React.useState(() => "")
 
   let handleSubmit = () => {
-    if (task !== "") {
-      addTask(task)
-     setTask(prevTask => "")   // Réinitialiser la tâche correctement
+    if (title !== "" && description !== "") {
+      // Appel de la fonction addTask avec le titre et la description
+      addTask(title, description)
+      // Réinitialisation des champs après l'ajout
+      setTitle(_ => "")
+      setDescription(_ => "")
     }
   }
 
-  <div className="flex flex-col items-center">
-    <h1 className="font-bold" style={ReactDOM.Style.make(~fontFamily="Times New Roman", ~fontSize="15px", ())}>
+  <div className="flex flex-col items-center p-4 bg-gray-900 text-white rounded-lg">
+    // Titre principal de la page
+    <h1 className="font-bold mb-2" style={ReactDOM.Style.make(~fontFamily="Times New Roman", ~fontSize="15px", ())}>
       {"Gestionnaire de tâches minimaliste"->React.string}
     </h1>
-    <h2 className="text-xl " style={ReactDOM.Style.make( ~fontSize="15px", ())}>
+
+    // Titre de la liste
+    <h2 className="text-xl mb-4" style={ReactDOM.Style.make(~fontSize="13px", ())}>
       {"Liste de Tâches"->React.string}
-    </h2>
-    <form className="task-input mt-4" onSubmit={_ => {
-      handleSubmit() // Appeler handleSubmit à la soumission
-      // Éviter la soumission par défaut
-    }}>
-      <input
-        value=task
-        onChange={e => setTask(_ => ReactEvent.Form.target(e)["value"])}
-        placeholder="Ajouter une nouvelle tâche..."
-        className="border border-gray-300 rounded-l-md p-2 flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500" // Styles pour l'input
-      />
+    </h2><form 
+  className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"
+  onSubmit={_ => {
+    handleSubmit() // Appeler handleSubmit à la soumission
+  }}
+>
+      // Champ pour le titre de la tâche
+      <div className="flex flex-col">
+        <label className="text-sm mb-1">{"Title:"->React.string}</label>
+        <input
+          value=title
+          onChange={e => setTitle(_ => ReactEvent.Form.target(e)["value"]) }
+          placeholder="What's the title of your To Do?"
+          className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      // Champ pour la description de la tâche
+      <div className="flex flex-col">
+        <label className="text-sm mb-1">{"Description:"->React.string}</label>
+        <input
+          value=description
+          onChange={e => setDescription(_ => ReactEvent.Form.target(e)["value"]) }
+          placeholder="What's the description of your To Do?"
+          className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      // Bouton "Add" pour ajouter la tâche
       <button 
-        type_="submit" 
-        className="ml-2 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600" // Styles pour le bouton
+        type_="submit"
+        className="p-2 bg-green-500 text-white rounded-md hover:bg-green-200"
       >
-        {"Ajouter"->React.string}
+        {"Add"->React.string}
       </button>
     </form>
   </div>
