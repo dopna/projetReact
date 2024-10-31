@@ -23,10 +23,9 @@ let make = (~addTask: (string, string) => unit) => {
     // Titre de la liste
    <h2 className="text-xl mb-4 text-white" style={ReactDOM.Style.make(~fontSize="13px", ())}>
       {"Liste de Tâches"->React.string}
-    </h2>   <form 
-  className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"
-  onSubmit={event => {
-    event->ReactEvent.Form.preventDefault
+    </h2><form 
+  className="flex flex-col sm:flex-row items-end space-y-4 sm:space-y-0 sm:space-x-4"
+  onSubmit={_ => {
     handleSubmit() // Appeler handleSubmit à la soumission
   }}
 >
@@ -62,5 +61,5 @@ let make = (~addTask: (string, string) => unit) => {
     </form>
        
   </div>
-  
 }
+

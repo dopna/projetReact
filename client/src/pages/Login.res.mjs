@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import * as JsxRuntime from "react/jsx-runtime";
+import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.res.mjs";
 
 function Login(props) {
   var match = React.useState(function () {
@@ -15,7 +16,7 @@ function Login(props) {
   var setPassword = match$1[1];
   var password = match$1[0];
   var handleSubmit = function () {
-    if (username !== "" && password !== "") {
+    if (username !== "admin" && password !== "admin") {
       setUsername(function (param) {
             return "";
           });
@@ -54,7 +55,10 @@ function Login(props) {
                         JsxRuntime.jsx("button", {
                               children: "Se connecter",
                               className: "p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 w-full",
-                              type: "submit"
+                              type: "submit",
+                              onClick: (function (_event) {
+                                  RescriptReactRouter.push("tasks");
+                                })
                             })
                       ],
                       className: "w-1/3",

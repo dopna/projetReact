@@ -56,6 +56,43 @@ function Tasks(props) {
   };
   return JsxRuntime.jsxs("div", {
               children: [
+                JsxRuntime.jsxs("header", {
+                      children: [
+                        JsxRuntime.jsx("div", {
+                              children: "Gestion des Tâches",
+                              className: "text-lg font-bold"
+                            }),
+                        JsxRuntime.jsx("nav", {
+                              children: JsxRuntime.jsxs("ul", {
+                                    children: [
+                                      JsxRuntime.jsx("li", {
+                                            children: JsxRuntime.jsx("a", {
+                                                  children: "Accueil",
+                                                  className: "hover:underline",
+                                                  href: "#"
+                                                })
+                                          }),
+                                      JsxRuntime.jsx("li", {
+                                            children: JsxRuntime.jsx("a", {
+                                                  children: "À propos",
+                                                  className: "hover:underline",
+                                                  href: "#"
+                                                })
+                                          }),
+                                      JsxRuntime.jsx("li", {
+                                            children: JsxRuntime.jsx("a", {
+                                                  children: "contact",
+                                                  className: "hover:underline",
+                                                  href: "#"
+                                                })
+                                          })
+                                    ],
+                                    className: "flex space-x-4"
+                                  })
+                            })
+                      ],
+                      className: "flex items-center justify-between p-4 bg-blue-500 text-white"
+                    }),
                 JsxRuntime.jsx("h1", {
                       children: "Liste de Tâches",
                       className: "text-3xl font-semibold"
