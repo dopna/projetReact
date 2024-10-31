@@ -32,6 +32,27 @@ let make = () => {
   )
 
   <div className="p-6">
+     <header className="flex items-center justify-between p-4 bg-blue-500 text-white">
+    // titre
+    <div className="text-lg font-bold">
+      {"Gestion des Tâches"->React.string}
+    </div>
+    
+    // Menu de navigation
+    <nav>
+      <ul className="flex space-x-4">
+        <li>
+          <a href="#" className="hover:underline">{"Accueil"->React.string}</a>
+        </li>
+        <li>
+          <a href="#" className="hover:underline">{"À propos"->React.string}</a>
+        </li>
+        <li>
+          <a href="#" className="hover:underline">{"contact"->React.string}</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
     /* Titre principal */
     <h1 className="text-3xl font-semibold"> {"Liste de Tâches"->React.string} </h1>
 

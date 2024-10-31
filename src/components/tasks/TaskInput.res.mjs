@@ -90,7 +90,7 @@ function TaskInput(props) {
                               type: "submit"
                             })
                       ],
-                      className: "flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4",
+                      className: "flex flex-col sm:flex-row items-end space-y-4 sm:space-y-0 sm:space-x-4",
                       onSubmit: (function (param) {
                           handleSubmit();
                         })
