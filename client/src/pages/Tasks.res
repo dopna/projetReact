@@ -1,72 +1,126 @@
-open TaskItem
-open TaskTable
-type task = {
-  id: int, 
-  title: string,
-  description: string,
-  isComplete: bool
-}
+open TaskItem;
+open TaskTable;
+
+type task = TaskItem.taskType
+type data = {title: string, description: string}
 
 @react.component
 let make = () => {
-  let (tasks, setTasks) = React.useState(() => ([]: array<TaskItem.taskType>))
+  // État des tâches
+  let (tasks, setTasks) = React.useState(() => ([]: array<task>));
 
+  // Charger les tâches au démarrage via l'API
   React.useEffect(() => {
-    Console.log("init")
-    None
-  }, [])
+    let getTasks = async () => {
+      let response = await Fetch.fetch("http://localhost:3000/tasks", {
+        method: #GET
+      })
+      let json = await Fetch.Response.json(response)
+      let data = json -> Js.Json.decodeArray -> Option.map(array => {
+        array -> Array.map(item => {
+          let object = item -> Js.Json.decodeObject -> Option.getExn
+          {
+            id: object->Js.Dict.get("id")->Option.getExn->Js.Json.decodeNumber->Option.getExn->Float.toInt,
+            title: object->Js.Dict.get("title")->Option.getExn->Js.Json.decodeString->Option.getExn,
+            description: object->Js.Dict.get("description")->Option.getExn->Js.Json.decodeString->Option.getExn,
+            isComplete: object->Js.Dict.get("isComplete")->Option.getExn->Js.Json.decodeNumber->Option.getExn->Float.toInt === 1,
+          }
+        })
+      }) -> Option.getExn
+      
+      setTasks(_ => data)
+      
+    }
+    let _ = getTasks()
+    
+    None;
+  }, []);
 
-  // Fonction pour ajouter une tâche avec title et description
-  let addTask = (title: string, description: string) => {
-    let newTask: TaskItem.taskType = { id: Js.Date.now() |> int_of_float, title, description, isComplete: false }
-    setTasks(tasks => [...tasks, newTask])
+
+  // Fonction pour ajouter une tâche via l'API
+let addTask = async (title: string, description: string) =>{
+  Console.log("plop")
+  
+  let data = {title, description}
+  let body = data->Js.Json.stringifyAny->Belt.Option.getExn->Fetch.Body.string
+
+
+  let response = await Fetch.fetch(
+    "http://localhost:3000/tasks",
+    {
+      method: #POST,
+      body,
+      headers: Fetch.Headers.fromObject({
+        "Content-type": "application/json",
+      }),
+    },
+  )
+     let json = await Fetch.Response.json(response)
+      let task = json->Js.Json.decodeObject->Option.map(obj => {
+        {
+          id: obj->Js.Dict.get("id")->Option.getExn->Js.Json.decodeNumber->Option.getExn->Float.toInt,
+          title: obj->Js.Dict.get("title")->Option.getExn->Js.Json.decodeString->Option.getExn,
+          description: obj->Js.Dict.get("description")->Option.getExn->Js.Json.decodeString->Option.getExn,
+          isComplete: obj->Js.Dict.get("isComplete")->Option.getExn->Js.Json.decodeNumber->Option.getExn->Float.toInt === 1,
+        }
+      })
+     switch task {
+      | Some(task) => setTasks(tasks => Array.concat(tasks, [task]))
+      }
+
+ }
+  // Fonction pour compléter une tâche (via l'API)
+  let completeTask = _id => {
+    ()
   }
 
-  // Fonction pour compléter une tâche
-  let completeTask = index => setTasks(tasks => 
-    tasks->Array.mapWithIndex((task, i) => 
-      if i === index { {...task, isComplete: !task.isComplete}} else {task}
-    )
+  // Fonction pour supprimer une tâche via l'API
+  let removeTask = async (id: int) => {
+  let url = "http://localhost:3000/tasks/" ++ string_of_int(id)
+
+  // Envoyer la requête DELETE
+  let _ = await Fetch.fetch(
+    url,
+    {
+      method: #DELETE,
+    }
   )
+    // Mise à jour locale des tâches
+      setTasks(_ => tasks->Array.filter(task => task.id !== id))
 
-  // Fonction pour supprimer une tâche avec `id`
-  let removeTask = id => setTasks(tasks =>
-    tasks->Array.filter(task => task.id !== id)
-  );
-
+}
   <div className="p-6">
-     <header className="flex items-center justify-between p-4 bg-blue-500 text-white">
-    // titre
-    <div className="text-lg font-bold">
-      {"Gestion des Tâches"->React.string}
-    </div>
+    <header className="flex items-center justify-between p-4 bg-blue-500 text-white">
+      /* Titre */
+      <div className="text-lg font-bold">
+        {"Gestion des Tâches"->React.string}
+      </div>
+
+      /* Menu de navigation */
+      <nav>
+        <ul className="flex space-x-4">
+          <li>
+            <a href="#" className="hover:underline">{"Accueil"->React.string}</a>
+          </li>
+          <li>
+            <a href="#" className="hover:underline">{"À propos"->React.string}</a>
+          </li>
+          <li>
+            <a href="#" className="hover:underline">{"Contact"->React.string}</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
     
-    // Menu de navigation
-    <nav>
-      <ul className="flex space-x-4">
-        <li>
-          <a href="#" className="hover:underline">{"Accueil"->React.string}</a>
-        </li>
-        <li>
-          <a href="#" className="hover:underline">{"À propos"->React.string}</a>
-        </li>
-        <li>
-          <a href="#" className="hover:underline">{"contact"->React.string}</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
-    /* Titre principal */
-    <h1 className="text-3xl font-semibold"> {"Liste de Tâches"->React.string} </h1>
 
     /* Formulaire pour ajouter une tâche */
-    <TaskInput addTask={addTask} /> // Envoie `addTask` avec deux paramètre s
+    <TaskInput addTask={addTask} /> /* Envoie `addTask` avec deux paramètres */
 
     /* Liste de tâches */
     <TaskList tasks={tasks} completeTask={completeTask} removeTask={removeTask} />
 
     /* Tableau des tâches */
-    <TaskTable tasks={tasks} onModify={(_) => ()} onDelete={(_) => ()} />
-   
+    <TaskTable tasks={tasks} onModify={(_) => ()} onDelete={removeTask} />
   </div>
 }
