@@ -31,7 +31,7 @@ function TaskInput(props) {
               children: [
                 JsxRuntime.jsx("h1", {
                       children: "Gestionnaire de tâches minimaliste",
-                      className: "font-bold mb-2",
+                      className: "font-bold mb-2 text-white",
                       style: {
                         fontFamily: "Times New Roman",
                         fontSize: "15px"
@@ -39,7 +39,7 @@ function TaskInput(props) {
                     }),
                 JsxRuntime.jsx("h2", {
                       children: "Liste de Tâches",
-                      className: "text-xl mb-4",
+                      className: "text-xl mb-4 text-white",
                       style: {
                         fontSize: "13px"
                       }
@@ -50,7 +50,7 @@ function TaskInput(props) {
                               children: [
                                 JsxRuntime.jsx("label", {
                                       children: "Title:",
-                                      className: "text-sm mb-1"
+                                      className: "text-sm mb-1 text-white"
                                     }),
                                 JsxRuntime.jsx("input", {
                                       className: "border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500",
@@ -63,13 +63,13 @@ function TaskInput(props) {
                                         })
                                     })
                               ],
-                              className: "flex flex-col"
+                              className: "flex flex-col "
                             }),
                         JsxRuntime.jsxs("div", {
                               children: [
                                 JsxRuntime.jsx("label", {
                                       children: "Description:",
-                                      className: "text-sm mb-1"
+                                      className: "text-sm mb-1 text-white"
                                     }),
                                 JsxRuntime.jsx("input", {
                                       className: "border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500",
@@ -82,7 +82,7 @@ function TaskInput(props) {
                                         })
                                     })
                               ],
-                              className: "flex flex-col"
+                              className: "flex flex-col "
                             }),
                         JsxRuntime.jsx("button", {
                               children: "Add",
@@ -90,13 +90,14 @@ function TaskInput(props) {
                               type: "submit"
                             })
                       ],
-                      className: "flex flex-col sm:flex-row items-end space-y-4 sm:space-y-0 sm:space-x-4",
-                      onSubmit: (function (param) {
+                      className: "flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4",
+                      onSubmit: (function ($$event) {
+                          $$event.preventDefault();
                           handleSubmit();
                         })
                     })
               ],
-              className: "flex flex-col items-center p-4 bg-gray-900 text-white rounded-lg"
+              className: "flex flex-col items-center p-4 bg-gray-900 text-black rounded-lg"
             });
 }
 
