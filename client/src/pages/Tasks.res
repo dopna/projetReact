@@ -121,6 +121,7 @@ let addTask = async (title: string, description: string) =>{
     <TaskList tasks={tasks} completeTask={completeTask} removeTask={removeTask} />
 
     /* Tableau des tâches */
-    <TaskTable tasks={tasks} onModify={(_) => ()} onDelete={removeTask} />
+    <TaskTable tasks={tasks} onModify={task => RescriptReactRouter.push("/modifier/"++ task.title ++ "/"++task.description)} onDelete={removeTask} />
+   
   </div>
 }
