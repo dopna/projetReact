@@ -1,4 +1,5 @@
 open TaskItem
+open Modifier;
 open TaskTable
 type task = {
   id: int, 
@@ -35,29 +36,18 @@ let make = () => {
   );
 
   <div className="p-6">
-     <header className="flex items-center justify-between p-4 bg-blue-500 text-white">
+     <header className="task-header">
     // titre
-    <div className="text-lg font-bold">
-      {"Gestion des Tâches"->React.string}
-    </div>
+    <div className="text-lg font-bold flex items-center justify-center p-4 bg-blue-500 text-white">
+  {"Task-Manager"->React.string}
+</div>
+
     
     // Menu de navigation
-    <nav>
-      <ul className="flex space-x-4">
-        <li>
-          <a href="#" className="hover:underline">{"Accueil"->React.string}</a>
-        </li>
-        <li>
-          <a href="#" className="hover:underline">{"À propos"->React.string}</a>
-        </li>
-        <li>
-          <a href="#" className="hover:underline">{"contact"->React.string}</a>
-        </li>
-      </ul>
-    </nav>
+  
   </header>
     /* Titre principal */
-    <h1 className="text-3xl font-semibold"> {"Liste de Tâches"->React.string} </h1>
+    
 
     /* Formulaire pour ajouter une tâche */
     <TaskInput addTask={addTask} /> // Envoie `addTask` avec deux paramètre s
@@ -66,7 +56,7 @@ let make = () => {
     <TaskList tasks={tasks} completeTask={completeTask} removeTask={removeTask} />
 
     /* Tableau des tâches */
-    <TaskTable tasks={tasks} onModify={(_) => ()} onDelete={(_) => ()} />
+    <TaskTable tasks={tasks} onModify={task => RescriptReactRouter.push("/modifier/"++ task.title ++ "/"++task.description)} onDelete={removeTask} />
    
   </div>
 }
