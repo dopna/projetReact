@@ -1,5 +1,5 @@
 @react.component
-let make = (~addTask: (string, string) => unit) => {
+let make = (~addTask: (string, string) => promise<unit>) => {
   // Définition des états pour le titre et la description
   let (title, setTitle) = React.useState(() => "")
   let (description, setDescription) = React.useState(() => "")
@@ -7,25 +7,26 @@ let make = (~addTask: (string, string) => unit) => {
   let handleSubmit = () => {
     if (title !== "" && description !== "") {
       // Appel de la fonction addTask avec le titre et la description
-      addTask(title, description)
+      let _ = addTask(title, description)
       // Réinitialisation des champs après l'ajout
       setTitle(_ => "")
       setDescription(_ => "")
     }
   }
 
-  <div className="flex flex-col items-center p-4 bg-gray-900 text-black rounded-lg">
+  <div className="flex flex-col items-center p-4 bg-gray-900 text-bleu rounded-lg">
     // Titre principal de la page
     <h1 className="font-bold mb-2 text-white" style={ReactDOM.Style.make(~fontFamily="Times New Roman", ~fontSize="15px", ())}>
       {"Gestionnaire de tâches minimaliste"->React.string}
     </h1>
 
     // Titre de la liste
-   <h2 className="text-xl mb-4 text-white" style={ReactDOM.Style.make(~fontSize="13px", ())}>
-      {"Liste de Tâches"->React.string}
-    </h2><form 
+   
+    <form 
   className="flex flex-col sm:flex-row items-end space-y-4 sm:space-y-0 sm:space-x-4"
-  onSubmit={_ => {
+  onSubmit={event => {
+    event->ReactEvent.Form.preventDefault;
+
     handleSubmit() // Appeler handleSubmit à la soumission
   }}
 >
